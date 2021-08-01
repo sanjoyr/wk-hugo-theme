@@ -1,0 +1,29 @@
+<!-- default imagename -->
+{{ $basename := .File.TranslationBaseName }}
+{{ $filename := print site.Params.ProjectImageFolder $basename ".jpg"}}
+
+{{ $scratch := newScratch }}
+{{ $scratch.Set "img" (print site.Params.ProjectImageFolder "default.jpg") }}
+
+{{if fileExists (print "static/" $filename) }}
+  {{ $scratch.Set "img" $filename}}
+{{ end }}
+
+<div class="card p-0 border-primary rounded-0 hover-shadow">
+  <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .Title }}">
+  <div class="card-body">
+    <ul class="list-inline mb-2">
+      <li class="list-inline-item"><i class="ti-location-pin"></i> {{ .Params.location }}</li><br/>
+      <li class="list-inline-item"><i class="ti-bookmark-alt"></i> {{ .Params.Category }}</li>
+    </ul>
+    <h4 class="card-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+    <p class="card-text mb-4">
+      {{ with .Params.Description }}
+      {{ . | truncate 300 | markdownify }}
+      {{ else }}
+      {{ .Summary | truncate 300 }}
+      {{ end }}      
+    </p>
+    <a href="{{ .Permalink }}" class="btn btn-primary btn-sm">{{ i18n "read_more"}}</a>
+  </div>
+</div>

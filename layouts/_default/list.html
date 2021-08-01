@@ -1,0 +1,31 @@
+{{ define "main" }}
+
+<!-- blogs -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 order-2 order-lg-1">
+        <div class="row">
+          <!-- blog post -->
+          {{ $paginator := .Paginate (sort ( where .Data.Pages "Type" "post") ".Weight" "desc" ".Date" "desc") }}
+          {{ range $paginator.Pages }}         
+          <div class="col-sm-6 mb-5">
+            <article
+              class="card rounded-0 border-bottom border-primary border-top-0 border-left-0 border-right-0 hover-shadow">
+              {{ .Render "post" }}
+            </article>
+          </div>
+          {{ end }}
+          
+          <div class="col-12 mt-4">
+            {{ template "_internal/pagination.html" . }}
+          </div>
+        </div>
+      </div>
+      {{ partial "blog-sidebar.html" . }}
+    </div>
+  </div>
+</section>
+<!-- /blogs -->
+
+{{ end }}

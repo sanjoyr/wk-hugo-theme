@@ -1,0 +1,62 @@
+<head>
+  <meta charset="utf-8">
+  <title>
+    {{- if .IsHome }}
+    {{- site.Title -}}
+    {{ else }}
+    {{- .Title }} | {{ site.Title -}}
+    {{ end -}}
+  </title>
+
+  {{ "<!-- mobile responsive meta -->" | safeHTML }}
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  {{ "<!-- Canonical for Source -->" | safeHTML }}
+  <link rel="canonical" href="{{ site.Params.domain }}">
+
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="{{ site.Params.keywords }}{{ range .Params.Keywords }},{{ . | lower }}{{ end }}{{ range .Params.Tags }},{{ . | lower}}{{ end }}">
+
+  <meta name="description"
+    content="{{ with .Params.Description }}{{ . }}{{ else }}{{ with site.Params.description }}{{ . }}{{ end }}{{ end }}">
+  
+  {{ with site.Params.author }}
+  <meta name="author" content="{{ . }}">{{ end }}
+  {{ hugo.Generator }}
+  {{ "<!-- multilingual SEO optimizations -->" | safeHTML }}
+  {{ if .IsTranslated }}
+  {{ range .Page.AllTranslations }}
+  <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
+  {{ end }}
+  {{ end }}
+
+  {{ "<!-- plugins -->" | safeHTML }}
+  {{ range site.Params.plugins.css }}
+  <link rel="stylesheet" href="{{ .link | absURL }}">
+  {{ end }}
+
+  {{ "<!-- Main Stylesheet -->" | safeHTML }}
+  {{ $styles := resources.Get "scss/main.scss" | toCSS | fingerprint "sha512" }}
+  <link rel="stylesheet" href="{{ $styles.Permalink }}" integrity="{{ $styles.Data.Integrity }}" media="screen">
+
+  {{ "<!--Favicon-->" | safeHTML }}
+  <meta name="Access-Control-Allow-Origin" content="{{ site.Params.shared_cdn  | absURL }}">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.Params.shared_cdn }}favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.shared_cdn }}favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.shared_cdn }}favicons/favicon-16x16.png">
+  <link rel="mask-icon" href="{{ site.Params.shared_cdn }}favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="{{ site.Params.shared_cdn }}favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#603cba">
+  <meta name="msapplication-config" content="{{ site.Params.shared_cdn }}favicons/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="manifest" href="{{ `site.webmanifest` | absURL}}">
+
+  {{ "<!--Fontawasome icons-->" | safeHTML }}
+  <script src="https://kit.fontawesome.com/65008ea540.js" crossorigin="anonymous"></script>
+
+  <!-- <link rel="shortcut icon" href="{{ `images/favicon.png` | absURL }}" type="image/x-icon">
+  <link rel="icon" href="{{ `images/favicon.png` | absURL }}" type="image/x-icon"> -->
+
+</head>

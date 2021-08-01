@@ -1,0 +1,15 @@
+<div class="card p-0 border-primary rounded-0 hover-shadow">
+  <div class="card-body">
+    <i class="{{ .Params.Icon }} mb-xl-4 mb-lg-3 mb-4 feature-icon"></i>
+    <h4 class="card-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+    <p>{{ i18n "time_to_spend" }}: {{.Params.Duration}}</p>
+    <p class="card-text mb-4">
+      {{ with .Params.Description }}
+      {{ . | truncate 300 | markdownify }}
+      {{ else }}
+      {{ .Summary | truncate 300 }}
+      {{ end }}      
+    </p>
+    <a href="{{ .Permalink }}" class="btn btn-primary btn-sm">{{ i18n "read_more"}}</a>
+  </div>
+</div>

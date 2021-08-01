@@ -1,0 +1,54 @@
+{{ define "main" }}
+
+<!-- default imagename -->
+{{ $basename := .File.TranslationBaseName }}
+{{ $filename := print site.Params.InvolveImageFolder $basename ".jpg"}}
+
+{{ $scratch := newScratch }}
+{{ $scratch.Set "img" (print site.Params.InvolveImageFolder "default.jpg") }}
+
+{{if fileExists (print "static/" $filename) }}
+  {{ $scratch.Set "img" $filename}}
+{{ end }}
+
+<!-- section -->
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <!-- course thumb -->
+        <img style="height: 500px;width: 100%;object-fit: cover;" src="{{ $scratch.Get `img` | relURL }}"
+          class="img-fluid w-100">
+      </div>
+    </div>
+    <!-- info -->
+    <div class="row align-items-center mb-5">
+      <div class="col-md-8 order-1">
+        <h2>{{ .Title }}</h2>
+        <p class="mb-0">{{ .Params.Motivation }}</p>
+      </div>
+      <div class="col-md-4 text-left order-2 mb-4">
+        <a href="{{ `contact` | relLangURL }}" class="btn btn-primary">{{ i18n "contact_us" }}</a>
+      </div>
+      <!-- border -->
+      <div class="col-12 mt-4 order-4">
+        <div class="border-bottom border-primary"></div>
+      </div>
+    </div>
+    <!-- details -->
+    <div class="row">
+      <div class="col-12 mb-4 content">
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /section -->
+
+<!-- cta -->
+{{ if site.Params.Enable_cta }}
+{{ partial "cta.html" . }}
+{{ end }}
+<!-- /cta -->
+
+{{ end }}

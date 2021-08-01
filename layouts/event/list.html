@@ -1,0 +1,24 @@
+{{ define "main" }}
+
+<!-- events -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <!-- each item -->
+      {{ $paginator := .Paginate (sort .Data.Pages ".Weight" "desc" ".Date" "desc") }}
+      {{ range $paginator.Pages }}         
+      <div class="col-lg-4 col-sm-6 mb-5">
+        {{ .Render "event" }}
+      </div>
+      {{ end }}
+      
+      <div class="col-12 mt-4">
+        {{ template "_internal/pagination.html" . }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- /events -->
+
+{{ end }}

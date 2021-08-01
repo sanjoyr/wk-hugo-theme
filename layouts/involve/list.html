@@ -1,0 +1,32 @@
+{{ define "main" }}
+
+<!-- involve -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <!-- each item -->
+      {{ range sort .Data.Pages ".Weight" "desc" }}         
+      <div class="col-md-6 mb-5">
+        {{ .Render "involve" }}
+      </div>
+      {{ end }}
+    </div>
+<!-- /involve -->
+
+<!-- content -->
+    <div class="row">
+      <div class="col-12">
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /content -->
+
+<!-- cta -->
+{{ if site.Params.Enable_cta }}
+{{ partial "cta.html" . }}
+{{ end }}
+<!-- /cta -->
+
+{{ end }}

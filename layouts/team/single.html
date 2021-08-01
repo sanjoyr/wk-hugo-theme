@@ -1,0 +1,80 @@
+{{ define "main" }}
+
+{{ $basename := .File.TranslationBaseName }}
+{{ $filename := print site.Params.TeamImageFolder $basename ".jpg"}}
+
+{{ $data := newScratch }}
+{{ $data.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+
+{{if fileExists (print "static/" $filename) }}
+  {{ $data.Set "img" $filename}}
+{{ end }}
+
+
+<!-- team details -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 mb-5">
+        <img class="img-fluid w-100" src="{{ $data.Get `img` | relURL }}" alt="{{ .Title }}">
+      </div>
+      <div class="col-md-6 mb-5">
+        <h3>{{ .Title }}</h3>
+        <h6 class="text-color">{{ .Params.City }}, {{ .Params.Country }}</h6>
+        <p class="mb-5">{{ .Params.Bio | markdownify }}</p>
+        <div class="row">
+          <div class="col-md-6 mb-5 mb-md-0">
+            <h4 class="mb-4">{{ i18n "contact_info" | upper}}:</h4>
+            <ul class="list-unstyled">
+              <li class="mb-3"><a class="text-color" href="{{ print `mailto:` (replace $basename `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope mr-2"></i>{{ print (replace $basename `-` `.`) site.Params.Email_suffix | lower | safeURL }}</a></li>
+              {{ range .Params.Contact }}
+              <li class="mb-3"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }} mr-2"></i>{{ .name }}</a></li>
+              {{ end }}
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h4 class="mb-4">{{ i18n "interest" | upper }}</h4>
+            <ul class="list-unstyled">
+              {{ range .Params.Interest }}
+              <li class="mb-3">{{ . | title }}</li>
+              {{ end }}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 content">
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /team details -->
+
+
+
+<!-- blog -->
+{{ $posts := sort (where (where site.RegularPages "Type" "post") "Params.author" $basename) "Weight" "desc"  "Date" "desc" }}
+{{ $count := len $posts }}
+{{ if gt $count 0 }}
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="section-title">{{ i18n "latest_article" }}</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <!-- blog post -->
+      {{ range $posts }}
+      <article class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+        {{ .Render "post" }}
+      </article>
+      {{ end }}
+    </div> 
+  </div>
+</section>
+{{ end }}
+
+<!-- /blog -->
+
+{{ end }}

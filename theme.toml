@@ -1,0 +1,16 @@
+name = "Wara KarmaYoga Basic"
+license = "MIT"
+licenselink = "https://gitlab.com/karmayoga/website/hugo-theme-wk/-/tree/main/LICENSE"
+description = "Basic hugo theme for Wara KarmaYoga related websites."
+homepage = "https://gitlab.com/karmayoga/website/hugo-theme-wk/"
+tags = ["blog",'google-analytics', 'fast', 'modern', 'minimal', 'minimalistic', 'business', 'education', 'white', 'light', 'multilingual', "bootstrap", "company", "portfolio", "projects", "responsive", "themefisher", "gethugothemes"]
+features = ["blog", "company", "responsive", "seo-friendly"]
+min_version = "0.70.0"
+
+[author]
+  name = "Wara KarmaYoga"
+  homepage = "https://www.wara.in/"
+
+[original]
+  name = "Educenter"
+  homepage = "https://themefisher.com/products/education-template/"

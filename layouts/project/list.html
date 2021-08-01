@@ -1,0 +1,23 @@
+{{ define "main" }}
+
+<!-- projects -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <!-- each item -->
+      {{ $paginator := .Paginate (sort .Data.Pages ".Weight" "desc" ".Date" "desc") }}
+      {{ range $paginator.Pages }}         
+      <div class="col-md-6 mb-5">
+        {{ .Render "project" }}
+      </div>
+      {{ end }}
+      
+      <div class="col-12 mt-4">
+        {{ template "_internal/pagination.html" . }}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /projects -->
+
+{{ end }}

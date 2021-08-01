@@ -1,0 +1,27 @@
+{{ $basename := .File.TranslationBaseName }}
+{{ $filename := print site.Params.TeamImageFolder $basename ".jpg"}}
+
+{{ $scratch := newScratch }}
+{{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+
+{{if fileExists (print "static/" $filename) }}
+  {{ $scratch.Set "img" $filename}}
+{{ end }}
+
+
+<div class="card border-0 rounded-0 hover-shadow mb-5">
+  <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .Title }}">
+  <div class="card-body">
+    <h4 class="card-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+    <p>{{ .Params.City }}, {{ .Params.Country }}</p>
+    {{ if site.Params.Enable_team_contact }}
+    <ul class="list-inline">
+      <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace $basename `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+      {{ range .Params.Contact }}
+      <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
+</div>

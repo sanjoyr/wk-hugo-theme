@@ -1,0 +1,67 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+
+<!-- about -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {{ range $data.about.items }}
+          <h2 class="section-title">{{ .name | markdownify }}</h2>
+          <p class="mb-4">{{ .content | markdownify }}</p>     
+        {{ end }}
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /about -->
+
+<!-- funfacts -->
+{{ if site.Params.Enable_funfacts }}
+{{ partial "funfacts.html" . }}
+{{ end }}
+<!-- /funfacts -->
+
+<!-- success story -->
+{{ if site.Params.Enable_highlights }}
+{{ partial "highlights.html" . }}
+{{ end }}
+<!-- /success story -->
+
+<!-- team -->
+{{ if site.Params.Enable_team }}
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center section-title justify-content-between">
+        <h2 class="section-title">{{ i18n "our_team" }}</h2>
+        <div class="border-top w-100 border-primary d-none d-sm-block"></div>
+        <div>
+          <a href="{{ `team` | relLangURL }}" class="btn btn-sm btn-outline-primary ml-sm-3 d-none d-sm-block">{{ i18n "see_all" }}</a>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <!-- team -->
+      {{ range sort (where site.RegularPages "Type" "team") ".Weight" "desc" | first 2 }}
+      <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
+        {{ .Render "team" }}
+      </div>
+      {{ end }}
+    </div>
+    <!-- mobile see all button -->
+    <div class="row">
+      <div class="col-12 text-center">
+        <a href="{{ `team` | relLangURL }}" class="btn btn-sm btn-outline-primary d-sm-none d-inline-block">{{ i18n "see_all" }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+<!-- /team -->
+
+{{ end }}
