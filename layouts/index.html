@@ -93,6 +93,17 @@
 
 <!-- Service header -->
 {{ range $data.services }}
+
+<!-- default imagename -->
+{{ $filename := print site.Params.ServiceImageFolder  .section_id ".jpg" }}
+
+{{ $scratch := newScratch }}
+{{ $scratch.Set "img" (print site.Params.ServiceImageFolder  "default.jpg") }}
+
+{{if fileExists (print "static/" $filename) }}
+  {{ $scratch.Set "img" $filename}}
+{{ end }}
+
 <section id="{{ .section_id }}" class="section">
   <div class="container">
     <div class="row align-items-center">
@@ -101,10 +112,9 @@
         <p>{{ .intro | markdownify }}</p>
         <p>{{ .description | markdownify }}</p>
         <!-- <a href="{{ .link }}" class="btn btn-outline-primary">{{ i18n "visit_service_website" }}</a> -->
-      </div>
-      {{ $img := print site.Params.ServiceImageFolder  .section_id ".jpg" }}    
+      </div>   
       <div class="col-md-6 order-1 order-md-2 mb-4 mb-md-0">
-        <img class="img-fluid w-100" src="{{ $img | absURL }}" alt="service image">
+        <img class="img-fluid w-100" src="{{ $scratch.Get `img` | absURL }}" alt="service image">
       </div>
     </div>
   </div>
