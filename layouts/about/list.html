@@ -47,7 +47,7 @@
     </div>
     <div class="row justify-content-center">
       <!-- team -->
-      {{ range sort (where site.RegularPages "Type" "team") ".Weight" "desc" | first 2 }}
+      {{ range sort (where site.RegularPages "Type" "team") ".Weight" "desc" | first site.Params.Team_member_no }}
       <div class="col-lg-4 col-sm-6 mb-5 mb-lg-0">
         {{ .Render "team" }}
       </div>
