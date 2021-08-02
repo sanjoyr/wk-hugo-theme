@@ -89,6 +89,42 @@
 {{ end }}
 <!-- /projects -->
 
+<!-- package -->
+{{ if site.Params.Enable_package }}
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center section-title justify-content-between">
+          <h2 class="mb-0 text-nowrap mr-3">{{ i18n "packages" }}</h2>
+          <div class="border-top w-100 border-primary d-none d-sm-block"></div>
+          <div>
+            <a href="{{ `package` | relLangURL }}" class="btn btn-sm btn-outline-primary ml-sm-3 d-none d-sm-block">{{ i18n "see_all" }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  list -->
+    <div class="row justify-content-center">
+      <!--  item -->
+      {{ range sort (where site.RegularPages "Type" "package") "Weight" "desc" | first 3 }}
+      <div class="col-md-4 mb-5">
+        {{ .Render "package" }}
+      </div>
+      {{ end }}
+    </div>
+    <!-- / list -->
+    <!-- mobile see all button -->
+    <div class="row">
+      <div class="col-12 text-center">
+        <a href="{{ `package` | relLangURL }}" class="btn btn-sm btn-outline-primary d-sm-none d-inline-block">{{ i18n "see_all" }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+<!-- /package -->
+
 <!-- Services -->
 
 <!-- Service header -->
