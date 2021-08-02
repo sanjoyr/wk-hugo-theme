@@ -53,6 +53,41 @@
 {{ end }}
 <!-- /banner-feature -->
 
+<!-- service_summary -->
+{{ if site.Params.Enable_service_summary }}
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center section-title justify-content-between">
+          <h2 class="mb-0 text-nowrap mr-3">{{ i18n "our_services" }}</h2>
+        </div>
+      </div>
+    </div>
+    <!--  list -->
+    <div class="row justify-content-center">
+      <!--  item -->
+      {{ range $data.services }}
+      <div class="col-md-4 mb-5">
+        <div class="card p-0 border-primary rounded-0 hover-shadow">
+          <div class="card-body">
+            <i class="{{ .icon }} mb-xl-4 mb-lg-3 mb-4 feature-icon"></i>
+            <h4 class="card-title"><a href="#{{ .section_id }}">{{ .title }}</a></h4>
+            <p class="card-text mb-4">{{ .intro }}</p>
+            <a href="#{{ .section_id }}" class="btn btn-primary btn-sm">{{ i18n "read_more"}}</a>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+    <!-- / list -->
+
+  </div>
+</section>
+{{ end }}
+<!-- /service_summary -->
+
+
 <!-- projects -->
 {{ if site.Params.Enable_projects }}
 <section class="section-sm">
