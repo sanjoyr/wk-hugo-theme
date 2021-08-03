@@ -14,14 +14,12 @@
   <div class="card-body">
     <i class="{{ .Params.Icon }} mb-xl-4 mb-lg-3 mb-4 feature-icon"></i>
     <h4 class="card-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-    <p>{{ with .Params.Duration}}{{ . }} {{ end }}</p>    
-    <p>{{ i18n "starts_from" }}</p>
-    <ul>
-    {{ range .Params.Prices }}
-    <li>{{ .name }} {{ .price }}({{ .country }})</li>
-    {{ end }}
-    </ul>
-    <br/>
+    <p>
+      {{ with .Params.Duration}}{{ . }} {{ end }}<br/>
+      {{ range .Params.Prices }}
+      {{ print .country ": " .name " " .price }}<br/>
+      {{ end }}
+    </p>  
     <p class="card-text mb-4">
       {{ with .Params.Description }}
       {{ . | truncate 300 | markdownify }}
