@@ -34,8 +34,10 @@
       </div>
       <div class="col-lg-5 content">
         {{ .Content }}
-        <a href="tel:{{ site.Params.mobile }}" class="text-color h5 d-block">{{ site.Params.mobile }}</a>
-        <a href="tel:{{ site.Params.mobile_bd }}" class="text-color h5 d-block">{{ site.Params.mobile_bd }}</a>
+
+        {{ range site.Params.phone }}
+        <a href="tel:{{ .mobile }}" class="text-color h5 d-block"><strong>{{ .country  | upper }} : </strong> {{ .mobile }}</a>
+        {{ end }}
         <a href="mailto:{{ site.Params.email }}" class="mb-5 text-color h5 d-block">{{ site.Params.email }}</a>
       </div>
     </div>
