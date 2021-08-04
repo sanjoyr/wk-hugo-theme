@@ -2,10 +2,10 @@
 
 <!-- default imagename -->
 {{ $basename := .File.TranslationBaseName }}
-{{ $filename := print site.Params.InvolveImageFolder $basename ".jpg"}}
+{{ $filename := print site.Params.PackageImageFolder $basename ".jpg"}}
 
 {{ $scratch := newScratch }}
-{{ $scratch.Set "img" (print site.Params.InvolveImageFolder "default.jpg") }}
+{{ $scratch.Set "img" (print site.Params.PackageImageFolder "default.jpg") }}
 
 {{if fileExists (print "static/" $filename) }}
   {{ $scratch.Set "img" $filename}}
