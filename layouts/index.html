@@ -15,7 +15,9 @@
             <h1 class="text-white" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3"
               data-animation-in="fadeInLeft" data-delay-in=".1">{{ .title | markdownify }}</h1>
             <p class="text-muted mb-4" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".4">{{ .intro | markdownify }}</p>
+            {{ if isset . "section_id" }}
             <a href="#{{ .section_id  }}" class="btn btn-primary" data-animation-out="fadeOutRight" data-delay-out="5" data-duration-in=".3" data-animation-in="fadeInLeft" data-delay-in=".7">{{ i18n "read_more" }}</a>
+            {{ end }}
           </div>
         </div>
       </div>
