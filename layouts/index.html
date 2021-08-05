@@ -74,7 +74,9 @@
             <i class="{{ .icon }} mb-xl-4 mb-lg-3 mb-4 feature-icon"></i>
             <h4 class="card-title"><a href="#{{ .section_id }}">{{ .title }}</a></h4>
             <p class="card-text mb-4">{{ .intro }}</p>
+            {{ if isset . "section_id" }}
             <a href="#{{ .section_id }}" class="btn btn-primary btn-sm">{{ i18n "read_more"}}</a>
+            {{ end }}
           </div>
         </div>
       </div>
@@ -161,6 +163,7 @@
 <!-- /package -->
 
 <!-- Services -->
+{{ if not (isset site.Params "disable_service_detail" )}}
 
 <!-- Service header -->
 {{ range $data.services }}
@@ -207,6 +210,8 @@
     </div>
   </div>
 </section>
+{{ end }}
+
 {{ end }}
 <!-- /services -->
 
