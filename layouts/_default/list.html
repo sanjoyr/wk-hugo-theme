@@ -1,10 +1,16 @@
 {{ define "main" }}
+{{ $catcount := len site.Taxonomies.categories }}
 
 <!-- blogs -->
 <section class="section">
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 order-2 order-lg-1">
+      <!-- show sidebar if number of categories > 0 -->
+      {{- if not (eq (len site.Taxonomies.categories) 0) }}
+      <div class="col-lg-8 order-1 order-lg-1">
+      {{ else }}
+      <div class="col-12 order-1 order-lg-1"></div>
+      {{- end }}
         <div class="row">
           <!-- blog post -->
           {{ $paginator := .Paginate (sort ( where .Data.Pages "Type" "post") ".Weight" "desc" ".Date" "desc") }}
@@ -22,7 +28,9 @@
           </div>
         </div>
       </div>
+      {{- if not (eq (len site.Taxonomies.categories) 0) }}
       {{ partial "blog-sidebar.html" . }}
+      {{- end }}
     </div>
   </div>
 </section>

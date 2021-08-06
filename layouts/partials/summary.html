@@ -1,0 +1,18 @@
+<article>
+<div class="mb-5">
+  <div class="card p-0 border-primary rounded-0 hover-shadow">
+    <div class="card-body">
+      <h4 class="card-title"><a href="{{ .Permalink  }}">{{ .Title }}</a></h4>
+      <p>{{ .Date.Format "Mon, Jan 2, 2006" }} - {{ .FuzzyWordCount }} Words </p>
+      <p class="card-text mb-4">
+        {{ with .Params.Description }}
+        {{ . | markdownify }}
+        {{ else }}
+        {{ .Summary }}
+        {{ end }} 
+      </p>
+      <a href="{{ .Permalink  }}" class="btn btn-primary btn-sm">{{ i18n "read_more"}}</a>
+    </div>
+  </div>
+</div>
+</article>

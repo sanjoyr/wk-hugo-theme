@@ -1,48 +1,95 @@
 {{ define "main" }}
-<!-- default imagename -->
+
+{{ $scratch := newScratch }}
+
+<!-- if categories not found, dont show sidebar -->
+
+{{ $scratch.Set "sidebar" "false" }}
+{{ if gt (len site.Taxonomies.categories) 0 }}
+{{ $scratch.Set "sidebar" "true" }}
+{{ end }}
+
+<!-- image details - provided name or same name as filename or nothing -->
+
 {{ $basename := .File.TranslationBaseName }}
 {{ $filename := print site.Params.BlogImageFolder $basename ".jpg"}}
 
-{{ $scratch := newScratch }}
-{{ $scratch.Set "img" (print site.Params.BlogImageFolder "default.jpg") }}
 
-{{if fileExists (print "static/" $filename) }}
-  {{ $scratch.Set "img" $filename}}
+{{ $scratch.Set "found" "false" }}
+
+{{ with .Params.image }}
+{{ $scratch.Set "img" . }}
+{{ else }}
+{{ $scratch.Set "img" $filename }}
 {{ end }}
+
+{{if fileExists (print "static/" ($scratch.Get "img")) }}
+  {{ $scratch.Set "found" "true" }}
+{{ end }}
+
+
 
 <!-- blog details -->
 <section class="section-sm">
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 order-2 order-lg-1">
+      {{ if eq ($scratch.Get "sidebar") "true" }}
+      <div class="col-lg-8 order-1 order-lg-1">
+      {{ else }}
+      <div class="col-lg-12 order-1 order-lg-1">
+      {{ end }}
+        
         <div class="row">
+          {{ if eq ($scratch.Get "found") "true" }}
           <div class="col-12 mb-4">
             <img src="{{ $scratch.Get `img` | relURL }}" alt="blog-thumb" class="img-fluid w-100">
           </div>
+          {{ end }}
           <div class="col-12">
             <ul class="list-inline">
+              {{ with .Params.Author }}
               <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "posted_by" }}
                   :</span><a
-                  href="{{ `team/` | relLangURL }}{{ .Params.Author | urlize }}">{{ replace .Params.Author `-` ` ` | title }}</a></li>
-
+                  href="{{ `team/` | relLangURL }}{{ . | urlize }}">{{ replace . `-` ` ` | title }}</a></li>
+              {{ end }}
               <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "date" }}
                   :</span>{{ .PublishDate.Format "02 Jan, 2006" }}</li>
 
+              {{ if eq ($scratch.Get "sidebar") "true" }}
               <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "category" }}
                   :</span>{{ range $index, $elements:= .Params.Categories }}<a
                   href="{{ `categories/` | relLangURL }}{{ . | urlize | lower }}"> {{ if ne $index 0 }}, {{ end }}
                   {{ . | title }}</a> {{ end}}</li>
-
+                {{ end }}
+              <!-- Previous -->
+            {{ with .NextInSection }}
+              <li><a href="{{ .Permalink }}"><span class="font-weight-bold mr-2">{{ i18n "previous" }}:</span>{{ .Title }}</a></li>
+            {{ end }}
             </ul>
           </div>
+
           <!-- border -->
           <div class="col-12 my-4">
             <div class="border-bottom"></div>
           </div>
+
           <!-- blog contect -->
           <div class="col-12 mb-5">
             {{ .Content }}
           </div>
+
+          <!-- border -->
+          <div class="col-12 my-4">
+            <div class="border-bottom"></div>
+          </div>
+
+          <!--  Next -->
+          <div class="col-12 mb-5">
+            {{ with .PrevInSection }}
+              <a href="{{ .Permalink }}"><span class="font-weight-bold mr-2">{{ i18n "next" }}:</span>{{ .Title }}</a>
+            {{ end }}
+          </div>
+
           <!-- comments -->
           {{ if site.DisqusShortname }}
           <div class="col-12">
@@ -51,7 +98,9 @@
           {{ end }}
         </div>
       </div>
+      {{ if eq ($scratch.Get "sidebar") "true" }}
       {{ partial "blog-sidebar.html" . }}
+      {{ end }}
     </div>
   </div>
 </section>

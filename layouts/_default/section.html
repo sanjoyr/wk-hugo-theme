@@ -1,0 +1,14 @@
+{{ define "main" }}
+<section class="section">
+    <div class="container">
+        {{ .Content }}
+        <div class="row justify-content-center">
+            {{ range .Data.Pages }}
+            <div>
+                {{ partial "summary.html" . }}
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+{{ end }}
