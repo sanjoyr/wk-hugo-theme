@@ -3,7 +3,10 @@
   <div class="card p-0 border-primary rounded-0 hover-shadow">
     <div class="card-body">
       <h4 class="card-title"><a href="{{ .Permalink  }}">{{ .Title }}</a></h4>
-      <p>{{ .Date.Format "Mon, Jan 2, 2006" }} - {{ .FuzzyWordCount }} Words </p>
+      {{ with .Date }}
+      <p>{{ .Day }} {{ i18n .Month }}, {{ .Year }} </p>
+      {{ end }}
+      <p><strong>{{ i18n "words" }}: </strong>{{ .FuzzyWordCount }} </p>
       <p class="card-text mb-4">
         {{ with .Params.Description }}
         {{ . | markdownify }}
