@@ -3,10 +3,16 @@
   <div class="card p-0 border-primary rounded-0 hover-shadow">
     <div class="card-body">
       <h4 class="card-title"><a href="{{ .Permalink  }}">{{ .Title }}</a></h4>
-      {{ with .Date }}
-      <p>{{ .Day }} {{ i18n .Month }}, {{ .Year }} </p>
-      {{ end }}
-      <p><strong>{{ i18n "words" }}: </strong>{{ .FuzzyWordCount }} </p>
+
+      <ul class="list-inline">
+        {{ with .Date }}
+        <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "date" }}
+            :</span>{{ .Day }} {{ i18n .Month }}, {{ .Year }}</li>
+        {{ end }}
+        <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "words" }}
+            :</span>{{ .FuzzyWordCount }}</li>
+      </ul>
+      
       <p class="card-text mb-4">
         {{ with .Params.Description }}
         {{ . | markdownify }}
