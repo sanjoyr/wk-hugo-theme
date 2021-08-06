@@ -52,9 +52,10 @@
                   :</span><a
                   href="{{ `team/` | relLangURL }}{{ . | urlize }}">{{ replace . `-` ` ` | title }}</a></li>
               {{ end }}
+              {{ with .Date }}
               <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "date" }}
-                  :</span>{{ .PublishDate.Format "02 Jan, 2006" }}</li>
-
+                  :</span>{{ .Day }} {{ i18n .Month }}, {{ .Year }}</li>
+                {{ end }}
               {{ if eq ($scratch.Get "sidebar") "true" }}
               <li class="list-inline-item mr-4 mb-3 mb-md-0 text-light"><span class="font-weight-bold mr-2">{{ i18n "category" }}
                   :</span>{{ range $index, $elements:= .Params.Categories }}<a
