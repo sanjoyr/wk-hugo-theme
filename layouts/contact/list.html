@@ -25,7 +25,11 @@
           </div>
 
           <input type="hidden" name="subject" id="subject" value="{{ site.Title }}"/>
+          {{ with .Params.ocode }}
+          <input type="hidden" name="ocode" id="ocode" value="{{ . }}"/>
+          {{ else }}
           <input type="hidden" name="ocode" id="ocode" value="WK"/>
+          {{ end }}
 
           <button type="submit" value="send" class="btn btn-primary">{{ i18n "send" }}</button>
         </form>
