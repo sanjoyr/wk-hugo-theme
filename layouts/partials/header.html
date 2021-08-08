@@ -49,8 +49,15 @@
                 {{ .Name }}
               </a>
               <div class="dropdown-menu">
+                {{ if (eq .Name  "Services") }}
+                  {{ $data := index site.Data site.Language.Lang }}
+                  {{ range $data.services }}
+                  <a class="dropdown-item" href="{{ `/` | absLangURL }}#{{ .section_id }}">{{ .title }}</a>
+                  {{ end }}
+                {{ else }}
                 {{ range .Children }}
                 <a class="dropdown-item" href="{{ .URL | absLangURL }}">{{ .Name }}</a>
+                {{ end }}
                 {{ end }}
               </div>
             </li>
