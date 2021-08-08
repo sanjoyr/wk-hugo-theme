@@ -52,7 +52,12 @@
                 {{ if (eq .Name  "Services") }}
                   {{ $data := index site.Data site.Language.Lang }}
                   {{ range $data.services }}
-                  <a class="dropdown-item" href="{{ `/` | absLangURL }}#{{ .section_id }}">{{ .title }}</a>
+                  {{ $secid := .section_id }}
+                  {{ with .short_name }}
+                  <a class="dropdown-item" href="{{ `/` | absLangURL }}#{{ $secid  }}">{{ . }}</a>
+                  {{ else }}
+                  <a class="dropdown-item" href="{{ `/` | absLangURL }}#{{ $secid }}">{{ .title }}</a>
+                  {{ end }}
                   {{ end }}
                 {{ else }}
                 {{ range .Children }}
