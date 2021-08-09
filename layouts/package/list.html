@@ -3,6 +3,7 @@
 <!-- package -->
 <section class="section">
   <div class="container">
+    <div class="row">{{ .Content }}</div>
     <div class="row">
       <!-- each item -->
       {{ range sort (where .Data.Pages ".Expired" "!=" "true") ".Weight" "desc" }}         
