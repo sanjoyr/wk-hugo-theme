@@ -49,7 +49,7 @@
                 {{ .Name }}
               </a>
               <div class="dropdown-menu">
-                {{ if (eq .Name  "Services") }}
+                {{ if (or (eq .Name  "Services") (eq .Name  "কার্যক্রম"))}}
                   {{ $data := index site.Data site.Language.Lang }}
                   {{ range $data.services }}
                   {{ $secid := .section_id }}
