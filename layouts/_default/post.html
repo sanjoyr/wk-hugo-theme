@@ -16,10 +16,14 @@
     <!-- post meta -->
     <ul class="list-inline mb-3">
       <!-- post date -->
-      <li class="list-inline-item mr-3 ml-0"><i class="ti-calendar"></i> {{ .PublishDate.Format "02 Jan, 2006" }}</li>
+      {{ with .PublishDate }}
+      <li class="list-inline-item mr-3 ml-0"><i class="ti-calendar"></i> {{ .Day }} {{ i18n .Month }}, {{ .Year }}</li>
+      {{ end }}
       <!-- author -->
+      {{ with .Params.Author }}
       <li class="list-inline-item mr-3 ml-0"><i class="ti-user"></i> <a
-        href="{{ `team/` | relLangURL }}{{ .Params.Author | urlize }}">{{ replace .Params.Author `-` ` ` | title }}</a></li>
+        href="{{ `team/` | relLangURL }}{{ . | urlize }}">{{ replace . `-` ` ` | title }}</a></li>
+      {{ end }}
     </ul>
       <h4 class="card-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
     <p class="card-text">
