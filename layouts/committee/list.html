@@ -1,0 +1,342 @@
+{{ define "main" }}
+
+{{ $data := index site.Data site.Language.Lang }}
+{{ $scratch := newScratch }}
+
+{{ $teamcat := substr (urls.Parse .Permalink).Path (len "/committee/") }}
+{{ if lt (len $teamcat) (len "BD-01") }}
+  {{ $scratch.Set "dcode" "NA" }}
+{{ else }} <!-- district code found  -->
+  {{ $scratch.Set "dcode" (substr $teamcat 0 (len "BD-01")) }}
+{{ end }}
+
+<!-- team -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {{ .Content }}
+      </div>
+    </div>
+
+    {{ if eq ($scratch.Get "dcode") "NA" }} <!-- for all districts -->
+    <div class="row">
+      <div class="col-12">
+        <!-- team category list -->
+        <ul class="list-inline text-center filter-controls mb-5">
+          <li class="list-inline-item m-3 text-uppercase active" data-filter="all">{{ i18n "all" }}</li>
+          {{ $categories := slice }}
+          {{ range $data.districts }}
+          {{ $categories = $categories | append .division }}
+          {{ end }}
+          {{ range ( $categories | uniq ) }}
+          <li class="list-inline-item m-3 text-uppercase" data-filter="{{ . | urlize }}">{{ . | humanize }}</li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+    <!-- team list -->
+    <div class="row filtr-container">
+      <!-- team -->
+      {{ range $data.districts }}
+      <div data-category="{{ .division | urlize }}" class="col-lg-4 col-sm-6 filtr-item">
+        {{ $filename := print site.Params.TeamImageFolder .pcode ".jpg"}}
+        {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+        {{if fileExists (print "static/" $filename) }}
+          {{ $scratch.Set "img" $filename}}
+        {{ end }}
+        <div class="card border-0 rounded-0 hover-shadow mb-5">
+          <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .pname }}">
+          <div class="card-body">
+            <h4 class="card-title"><a href="{{ (print `committee/` .dcode) | lower | relLangURL }}">{{ .dname }}</a></h4>
+            <p>{{ .pname }}, {{ .dname }} {{ i18n "district" }} {{ i18n "president" }}</p>
+
+            {{ if site.Params.Enable_team_contact }}
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .pcode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+              {{ range site.Params.Social }}
+              <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      {{ end }}
+    </div> 
+
+    {{ else }} <!-- for one specific district -->
+
+      {{ $district := where $data.districts ".dcode" ($scratch.Get "dcode" | upper ) }}    
+      {{ range $district}}
+      {{ $dname := .dname }}      
+
+      <!-- district committee -->
+      <div class="row">
+      <div class="col-12">
+      <h2>{{ $dname }} {{ i18n "district" }} {{ i18n "committee" }}</h2>
+      </div>
+
+        <!-- district president -->
+        <div class="col-lg-4 col-sm-6">
+            {{ $filename := print site.Params.TeamImageFolder .pcode ".jpg"}}
+            {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+            {{if fileExists (print "static/" $filename) }}
+              {{ $scratch.Set "img" $filename}}
+            {{ end }}
+            <div class="card border-0 rounded-0 hover-shadow mb-5">
+              <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .pname }}">
+              <div class="card-body">
+                <h4 class="card-title">{{ .pname }}</h4>
+                <p>{{ i18n "president" }}, {{ .dname }} {{ i18n "district" }} {{ i18n "committee" }}</p>
+    
+                {{ if site.Params.Enable_team_contact }}
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .pcode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+                  {{ range site.Params.Social }}
+                  <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+                  </li>
+                  {{ end }}
+                </ul>
+                {{ end }}
+              </div>
+            </div>
+          </div>
+          <!-- district president -->
+
+        <!-- district secretary -->
+        <div class="col-lg-4 col-sm-6">
+          {{ $filename := print site.Params.TeamImageFolder .scode ".jpg"}}
+          {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+          {{if fileExists (print "static/" $filename) }}
+            {{ $scratch.Set "img" $filename}}
+          {{ end }}
+          <div class="card border-0 rounded-0 hover-shadow mb-5">
+            <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .sname }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ .sname }}</h4>
+              <p>{{ i18n "secretary" }}, {{ .dname }} {{ i18n "district" }} {{ i18n "committee" }}</p>
+  
+              {{ if site.Params.Enable_team_contact }}
+              <ul class="list-inline">
+                <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .scode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+                {{ range site.Params.Social }}
+                <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+                </li>
+                {{ end }}
+              </ul>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+        <!-- district secretary -->
+
+        <!-- district coordinator -->
+        <div class="col-lg-4 col-sm-6">
+          {{ $filename := print site.Params.TeamImageFolder .ccode ".jpg"}}
+          {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+          {{if fileExists (print "static/" $filename) }}
+            {{ $scratch.Set "img" $filename}}
+          {{ end }}
+          <div class="card border-0 rounded-0 hover-shadow mb-5">
+            <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .cname }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ .cname }}</h4>
+              <p>{{ i18n "coordinator" }}, {{ .dname }} {{ i18n "district" }} {{ i18n "committee" }}</p>
+  
+              {{ if site.Params.Enable_team_contact }}
+              <ul class="list-inline">
+                <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .ccode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+                {{ range site.Params.Social }}
+                <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+                </li>
+                {{ end }}
+              </ul>
+              {{ end }}
+            </div>
+          </div>
+        </div>
+        <!-- district coordinator -->
+
+
+        <!-- district members -->
+        
+        {{ range  .members }}
+        <div class="col-lg-4 col-sm-6">
+            {{ $filename := print site.Params.TeamImageFolder .mcode ".jpg"}}
+            {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+            {{if fileExists (print "static/" $filename) }}
+              {{ $scratch.Set "img" $filename}}
+            {{ end }}
+            <div class="card border-0 rounded-0 hover-shadow mb-5">
+              <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .mname }}">
+              <div class="card-body">
+                <h4 class="card-title">{{ .mname }}</h4>
+                <p>{{ i18n "member" }} {{ i18n "district" }} {{ i18n "committee" }}</p>
+    
+                {{ if site.Params.Enable_team_contact }}
+                <ul class="list-inline">
+                  <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .mcode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+                  {{ range site.Params.Social }}
+                  <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+                  </li>
+                  {{ end }}
+                </ul>
+                {{ end }}
+              </div>
+            </div>
+          </div>
+          {{ end }}
+          <!-- district members -->
+
+          <div class="col-12"><h2 class="text-center">{{ i18n "upazilla"}} {{ i18n "committee"}}, {{ $dname }}</h2></div>
+        </div>
+
+
+    <!-- upazilla list -->
+
+    <div class="row">
+      <div class="col-12">
+        <!-- team category list -->
+        <ul class="list-inline text-center filter-controls mb-5">
+          <li class="list-inline-item m-3 text-uppercase active" data-filter="all">{{ i18n "all" }}</li>
+          {{ $categories := slice }}
+          {{ range .thanas }}
+          {{ $categories = $categories | append .tname }}
+          {{ end }}
+          {{ range ( $categories | uniq ) }}
+          <li class="list-inline-item m-3 text-uppercase" data-filter="{{ . | urlize }}">{{ . | humanize }}</li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+    <!-- team list -->
+    <div class="row filtr-container">
+      <!-- team -->
+      {{ range .thanas }}
+
+      <!-- upazilla president -->
+      <div data-category="{{ .tname | urlize }}" class="col-lg-4 col-sm-6 filtr-item">
+        {{ $filename := print site.Params.TeamImageFolder .tpcode ".jpg"}}
+        {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+        {{if fileExists (print "static/" $filename) }}
+          {{ $scratch.Set "img" $filename}}
+        {{ end }}
+        <div class="card border-0 rounded-0 hover-shadow mb-5">
+          <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .tpname }}">
+          <div class="card-body">
+            <h4 class="card-title">{{ .tpname }}</h4>
+            <p>{{ i18n "president"}}, {{ .tname }} {{ i18n "upazilla" }} {{ i18n "committee" }}</p>
+
+            {{ if site.Params.Enable_team_contact }}
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .tpcode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+              {{ range site.Params.Social }}
+              <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      <!-- upazilla president -->
+
+
+      <!-- upazilla secretary -->
+      <div data-category="{{ .tname | urlize }}" class="col-lg-4 col-sm-6 filtr-item">
+        {{ $filename := print site.Params.TeamImageFolder .tscode ".jpg"}}
+        {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+        {{if fileExists (print "static/" $filename) }}
+          {{ $scratch.Set "img" $filename}}
+        {{ end }}
+        <div class="card border-0 rounded-0 hover-shadow mb-5">
+          <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .tsname }}">
+          <div class="card-body">
+            <h4 class="card-title">{{ .tsname }}</h4>
+            <p>{{ i18n "secretary"}}, {{ .tname }} {{ i18n "upazilla" }} {{ i18n "committee" }}</p>
+
+            {{ if site.Params.Enable_team_contact }}
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .tscode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+              {{ range site.Params.Social }}
+              <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      <!-- upazilla secretary -->
+
+
+      <!-- upazilla coordinator -->
+      <div data-category="{{ .tname | urlize }}" class="col-lg-4 col-sm-6 filtr-item">
+        {{ $filename := print site.Params.TeamImageFolder .tccode ".jpg"}}
+        {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+        {{if fileExists (print "static/" $filename) }}
+          {{ $scratch.Set "img" $filename}}
+        {{ end }}
+        <div class="card border-0 rounded-0 hover-shadow mb-5">
+          <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .tcname }}">
+          <div class="card-body">
+            <h4 class="card-title">{{ .tcname }}</h4>
+            <p>{{ i18n "coordinator"}}, {{ .tname }} {{ i18n "upazilla" }} {{ i18n "committee" }}</p>
+
+            {{ if site.Params.Enable_team_contact }}
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .tccode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+              {{ range site.Params.Social }}
+              <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      <!-- upazilla coordinator -->
+
+
+      <!-- upazilla members -->
+      {{ $tname := .tname }}
+      {{ range .tmembers}}
+      <div data-category="{{ $tname | urlize }}" class="col-lg-4 col-sm-6 filtr-item">
+        {{ $filename := print site.Params.TeamImageFolder .tmcode ".jpg"}}
+        {{ $scratch.Set "img" (print site.Params.TeamImageFolder "default.jpg") }}
+        {{if fileExists (print "static/" $filename) }}
+          {{ $scratch.Set "img" $filename}}
+        {{ end }}
+        <div class="card border-0 rounded-0 hover-shadow mb-5">
+          <img class="card-img-top rounded-0" src="{{ $scratch.Get `img` | relURL }}" alt="{{ .tmname }}">
+          <div class="card-body">
+            <h4 class="card-title">{{ .tmname }}</h4>
+            <p>{{ i18n "member"}}, {{ $tname }} {{ i18n "upazilla" }} {{ i18n "committee" }}</p>
+
+            {{ if site.Params.Enable_team_contact }}
+            <ul class="list-inline">
+              <li class="list-inline-item"><a class="text-color" href="{{ print `mailto:` (replace .tmcode `-` `.`) site.Params.Email_suffix | lower | safeURL }}"><i class="fas fa-envelope"></i></a>
+              {{ range site.Params.Social }}
+              <li class="list-inline-item"><a class="text-color" href="{{ .link | safeURL }}"><i class="{{ .icon }}"></i></a>
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      {{ end }}
+      <!-- upazilla members -->
+
+      {{ end }}
+    </div>
+    {{ end }}
+    {{ end }}  
+  </div>
+</div>
+</section>
+<!-- /team -->
+
+{{ end }}
