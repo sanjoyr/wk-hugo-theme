@@ -42,13 +42,13 @@
   {{ "<!--Favicon-->" | safeHTML }}
   <meta name="Access-Control-Allow-Origin" content="{{ site.Params.shared_cdn  | absURL }}">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.Params.shared_cdn }}favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.shared_cdn }}favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.shared_cdn }}favicons/favicon-16x16.png">
-  <link rel="mask-icon" href="{{ site.Params.shared_cdn }}favicons/safari-pinned-tab.svg" color="#5bbad5">
-  <link rel="shortcut icon" href="{{ site.Params.shared_cdn }}favicons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.Params.shared_cdn | absURL }}}favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.Params.shared_cdn | absURL }}favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.Params.shared_cdn | absURL }}favicons/favicon-16x16.png">
+  <link rel="mask-icon" href="{{ site.Params.shared_cdn | absURL }}favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="{{ site.Params.shared_cdn | absURL }}favicons/favicon.ico">
   <meta name="msapplication-TileColor" content="#603cba">
-  <meta name="msapplication-config" content="{{ site.Params.shared_cdn }}favicons/browserconfig.xml">
+  <meta name="msapplication-config" content="{{ site.Params.shared_cdn | absURL }}favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
   <link rel="manifest" href="{{ `site.webmanifest` | absURL}}">
