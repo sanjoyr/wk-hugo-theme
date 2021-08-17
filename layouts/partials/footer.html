@@ -140,7 +140,7 @@
 {{ end }}
 
 {{ "<!-- Contact Form JS -->" | safeHTML }}
-<script src="{{ site.Params.shared_cdn }}js/contactform.js"></script>
+<script src="{{ print site.Params.shared_cdn `js/contactform.js` | absURL }}"></script>
 
 {{ "<!-- Main Script -->" | safeHTML }}
 {{ $script := resources.Get "js/script.js" | minify}}
